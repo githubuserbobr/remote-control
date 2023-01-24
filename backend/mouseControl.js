@@ -1,7 +1,7 @@
 import { down, up, right, left, mouse } from "@nut-tree/nut-js";
 
 export async function mouseControl(command) {
-    command = command.replace('mouse_', '').split(' ')    // console.log(command[1])
+    command = command.replace('mouse_', '').split(' ');
 
     switch (command[0]) {
         case 'up': 
