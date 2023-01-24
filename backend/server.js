@@ -1,14 +1,23 @@
-import { WebSocketServer } from "ws";
+import { createWebSocketStream, WebSocketServer } from "ws";
+import { mouseControl } from "./mouseControl.js";
 
-export const wsServer = new WebSocketServer({ port:8080 })
+const PORT = 8080;
 
-export function createServer() {
-  wsServer.on('connection', function connection(ws) {
-    wsServer.on('message', function message(message) {
-      console.log(`websocket server started on port: ${PORT} \n with adress: localhost:8080`)
-      console.log('received: ', message.toString());
-    }); 
-    ws.send('something');
+export const wsServer = new WebSocketServer({ port: PORT });
+
+export function createServer(ws) {
+  wsServer.on('connection', function (WebSocket) {
+    const stream = createWebSocketStream(WebSocket, { decodeStrings: false })
+    
+    stream.on('data',  data => {
+      stream.write(data.toString())
+      mouseControl(data.toString())
+    })
+    console.log(`websocket server started on port: ${PORT} \n with adress: localhost:8080`);
   });
 }
+
+
+
+
 
